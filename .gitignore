@@ -20,3 +20,9 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+*.pth
+*.json
+
+ALTest
+roboprojects/pointcepts/temp
+roboprojects/pointcepts/model_weights
