@@ -98,16 +98,16 @@ class CommonWindow(QMainWindow):
         '''
         pred = torch.from_numpy(self.pred)
         pred_scores_softmax = torch.from_numpy(self.pred_scores) # [27815, 16]
-        # pred_scores_softmax = torch.softmax(pred_scores, dim=-1)
         P = torch.gather(pred_scores_softmax, 1, pred.unsqueeze(1)).squeeze()
         R = torch.sum(pred_scores_softmax, dim=-1) - P
-        P = P - P.min() + 1e-5
-        p_fn, p_fp = 0.2 * torch.ones(1), 0.8 * torch.ones(1)
+        P = P - 30
+        P = torch.clamp_min(P, 0)
+        p_fn, p_fp = 0.8 * torch.ones(1), 0.8 * torch.ones(1)
         m_p = torch.pow(p_fn, R) * (1 - torch.pow(p_fp, P))
         m_o = torch.pow(p_fp, P) * (1 - torch.pow(p_fn, R))
 
-        uncentainess = 1 - m_o - m_p
-        uncentainess = torch.clamp_min(uncentainess, 0)
+        uncentainess = 1 - m_p
+        # uncentainess = torch.clamp_min(uncentainess, 0)
         
         colors = torch.ones([uncentainess.shape[0], 4])*255
         colors[:,3] = uncentainess

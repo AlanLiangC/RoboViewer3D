@@ -23,6 +23,8 @@ TestResults.xml
 *.pth
 *.json
 
+*.pyc
 ALTest
 roboprojects/pointcepts/temp
 roboprojects/pointcepts/model_weights
+projects
